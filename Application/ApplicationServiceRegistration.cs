@@ -1,4 +1,4 @@
-﻿using Core.Application.Rules;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,18 +15,21 @@ public static class ApplicationServiceRegistration
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));  
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+            configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
-        
-        
+
+
 
         return services;
     }
-    
+
     public static IServiceCollection AddSubClassesOfType(
         this IServiceCollection services,
         Assembly assembly,
