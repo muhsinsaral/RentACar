@@ -1,6 +1,7 @@
 ﻿using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.PipeLines.Transaction;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Commands.Create;
 
-public class CreateBrandCommand : IRequest<CreatedBrandResponse>
+public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalRequest
 {
     public string Name { get; set; }
 
@@ -33,6 +34,7 @@ public class CreateBrandCommand : IRequest<CreatedBrandResponse>
             Brand brand = _mapper.Map<Brand>(request);
             brand.Id = Guid.NewGuid();
 
+            await _brandRepository.AddAsync(brand);
             await _brandRepository.AddAsync(brand);
 
             CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(brand);

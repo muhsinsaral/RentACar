@@ -1,4 +1,7 @@
-﻿using FluentValidation;
+﻿using Core.Application.PipeLines.Transaction;
+using Core.Application.PipeLines.Validation;
+using Core.Application.Rules;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Application;
 
@@ -22,7 +26,12 @@ public static class ApplicationServiceRegistration
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+            
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
+
+            configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
+
+
         });
 
 
