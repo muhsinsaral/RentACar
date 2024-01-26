@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Core.Persistence">
-      <HintPath>..\..\Core.Packages\Core.Application\bin\Debug\net7.0\Core.Persistence.dll</HintPath>
+      <HintPath>..\..\Core.Packages\Core.Application\bin\Debug\net8.0\Core.Persistence.dll</HintPath>
     </Reference>
   </ItemGroup>
 

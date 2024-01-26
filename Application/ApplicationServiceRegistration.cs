@@ -1,4 +1,5 @@
-﻿using Core.Application.PipeLines.Transaction;
+﻿using Core.Application.PipeLines.Caching;
+using Core.Application.PipeLines.Transaction;
 using Core.Application.PipeLines.Validation;
 using Core.Application.Rules;
 using FluentValidation;
@@ -28,10 +29,8 @@ public static class ApplicationServiceRegistration
             configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
             
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
-
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
-
-
+            configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
         });
 
 

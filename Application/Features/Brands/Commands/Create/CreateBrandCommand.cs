@@ -9,12 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Application.PipeLines.Caching;
 
 namespace Application.Features.Brands.Commands.Create;
 
-public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalRequest
+public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalRequest, ICacheRemoverRequest
 {
     public string Name { get; set; }
+
+    public string CacheKey => throw new NotImplementedException();
+
+    public bool BypassCache => throw new NotImplementedException();
 
     public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
     {
@@ -35,8 +40,7 @@ public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalR
             brand.Id = Guid.NewGuid();
 
             await _brandRepository.AddAsync(brand);
-            await _brandRepository.AddAsync(brand);
-
+            
             CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(brand);
             return createdBrandResponse;
         }
