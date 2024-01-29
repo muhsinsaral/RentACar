@@ -10,16 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Application.PipeLines.Caching;
+using Core.Application.PipeLines.Logging;
 
 namespace Application.Features.Brands.Commands.Create;
 
-public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalRequest, ICacheRemoverRequest
+public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ITransactionalRequest, ICacheRemoverRequest,ILoggableRequest
 {
     public string Name { get; set; }
 
-    public string CacheKey => throw new NotImplementedException();
+    public string CacheKey => "";
 
-    public bool BypassCache => throw new NotImplementedException();
+    public bool BypassCache => false;
+    public string? CacheGroupKey => "GetBrands";
 
     public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
     {
@@ -40,7 +42,7 @@ public class CreateBrandCommand : IRequest<CreatedBrandResponse>,ITransactionalR
             brand.Id = Guid.NewGuid();
 
             await _brandRepository.AddAsync(brand);
-            
+
             CreatedBrandResponse createdBrandResponse = _mapper.Map<CreatedBrandResponse>(brand);
             return createdBrandResponse;
         }
